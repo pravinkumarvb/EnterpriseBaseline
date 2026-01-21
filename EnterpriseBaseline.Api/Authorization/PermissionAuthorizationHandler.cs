@@ -6,19 +6,21 @@ namespace EnterpriseBaseline.Api.Authorization
          : AuthorizationHandler<PermissionRequirement>
     {
         protected override Task HandleRequirementAsync(
-            AuthorizationHandlerContext context,
-            PermissionRequirement requirement)
-        {
-            var hasPermission = context.User.Claims.Any(c =>
-                c.Type == "permission" &&
-                c.Value == requirement.Permission);
-
-            if (hasPermission)
+        AuthorizationHandlerContext context,
+        PermissionRequirement requirement)
             {
-                context.Succeed(requirement);
-            }
+                if (context.User?.Identity?.IsAuthenticated != true)
+                    return Task.CompletedTask;
 
-            return Task.CompletedTask;
-        }
+                var permissions = context.User.FindAll("permission")
+                                              .Select(c => c.Value);
+
+                if (permissions.Contains(requirement.Permission))
+                {
+                    context.Succeed(requirement);
+                }
+
+                return Task.CompletedTask;
+            }
     }
 }

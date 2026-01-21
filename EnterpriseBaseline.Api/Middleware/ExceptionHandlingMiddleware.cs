@@ -1,7 +1,10 @@
 ﻿using EnterpriseBaseline.Application.Common;
 using EnterpriseBaseline.Application.Exceptions;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Text.Json;
+
 
 namespace EnterpriseBaseline.Api.Middleware
 {
@@ -27,6 +30,15 @@ namespace EnterpriseBaseline.Api.Middleware
             catch (BusinessException ex)
             {
                 await HandleBusinessException(context, ex);
+            }
+            catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex))
+            {
+                await HandleException(
+                    context,
+                    HttpStatusCode.BadRequest,
+                    "VALIDATION_FAILED",
+                    "Duplicate value detected"
+                );
             }
             catch (Exception ex)
             {
@@ -93,6 +105,16 @@ namespace EnterpriseBaseline.Api.Middleware
             await context.Response.WriteAsync(
                 JsonSerializer.Serialize(error)
             );
+        }
+
+        private static bool IsUniqueConstraintViolation(DbUpdateException ex)
+        {
+            if (ex.InnerException is SqlException sqlEx)
+            {
+                return sqlEx.Number == 2601 || sqlEx.Number == 2627;
+            }
+
+            return false;
         }
     }
 }

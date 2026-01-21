@@ -66,6 +66,18 @@ builder.Services.AddAuthorization(options =>
 
     options.AddPolicy("Users.Delete", policy =>
         policy.Requirements.Add(new PermissionRequirement("Users.Delete")));
+
+    options.AddPolicy("Departments.View", policy =>
+       policy.Requirements.Add(new PermissionRequirement("Departments.View")));
+
+    options.AddPolicy("Departments.Create", policy =>
+        policy.Requirements.Add(new PermissionRequirement("Departments.Create")));
+
+    options.AddPolicy("Departments.Update", policy =>
+        policy.Requirements.Add(new PermissionRequirement("Departments.Update")));
+
+    options.AddPolicy("Departments.Delete", policy =>
+        policy.Requirements.Add(new PermissionRequirement("Departments.Delete")));
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -101,9 +113,12 @@ builder.Services.AddSwaggerGen(c =>
 
 // Application services
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
 // Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+
 
 // Identity / Security
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
@@ -129,6 +144,45 @@ using (var scope = app.Services.CreateScope())
         };
 
         db.Users.Add(adminUser);
+        db.SaveChanges();
+    }
+
+    if (!db.Roles.Any())
+    {
+        var adminRole = new Role
+        {
+            Name = "Admin"
+        };
+
+        db.Roles.Add(adminRole);
+
+        db.Permissions.AddRange(
+            new Permission { Code = "Departments.View", Description = "View departments" },
+            new Permission { Code = "Departments.Create", Description = "Create departments" },
+            new Permission { Code = "Departments.Update", Description = "Update departments" },
+            new Permission { Code = "Departments.Delete", Description = "Delete departments" }
+        );
+
+        db.SaveChanges();
+
+        var permissions = db.Permissions.ToList();
+
+        foreach (var permission in permissions)
+        {
+            db.RolePermissions.Add(new RolePermission
+            {
+                RoleId = adminRole.Id,
+                PermissionId = permission.Id
+            });
+        }
+
+        var adminUser = db.Users.First();
+        db.UserRoles.Add(new UserRole
+        {
+            UserId = adminUser.Id,
+            RoleId = adminRole.Id
+        });
+
         db.SaveChanges();
     }
 }
