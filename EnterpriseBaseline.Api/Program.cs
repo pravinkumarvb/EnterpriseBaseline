@@ -1,4 +1,5 @@
 using EnterpriseBaseline.Api.Authorization;
+using EnterpriseBaseline.Api.Middleware;
 using EnterpriseBaseline.Application.Interfaces.Repositories;
 using EnterpriseBaseline.Application.Interfaces.Services;
 using EnterpriseBaseline.Application.Services;
@@ -140,6 +141,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

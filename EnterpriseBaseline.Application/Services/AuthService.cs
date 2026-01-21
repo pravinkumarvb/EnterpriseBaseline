@@ -1,4 +1,5 @@
 ﻿using EnterpriseBaseline.Application.DTOs.Auth;
+using EnterpriseBaseline.Application.Exceptions;
 using EnterpriseBaseline.Application.Interfaces.Repositories;
 using EnterpriseBaseline.Application.Interfaces.Services;
 
@@ -26,10 +27,10 @@ namespace EnterpriseBaseline.Application.Services
                 .GetByUserNameOrEmailAsync(request.UserNameOrEmail);
 
             if (user == null || !user.IsActive)
-                throw new UnauthorizedAccessException("Invalid credentials");
+                throw new UnauthorizedException("Invalid credentials");
 
             if (!_passwordHasher.VerifyPassword(user.PasswordHash, request.Password))
-                throw new UnauthorizedAccessException("Invalid credentials");
+                throw new UnauthorizedException("Invalid credentials");
 
             var permissions = user.UserRoles
                 .SelectMany(ur => ur.Role.RolePermissions)

@@ -1,4 +1,5 @@
-﻿using EnterpriseBaseline.Application.DTOs.Auth;
+﻿using EnterpriseBaseline.Application.Common;
+using EnterpriseBaseline.Application.DTOs.Auth;
 using EnterpriseBaseline.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,11 @@ namespace EnterpriseBaseline.Api.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
         {
             var result = await _authService.LoginAsync(request);
-            return Ok(result);
+            return Ok(ApiResponse<LoginResponseDto>.Ok(
+               result,
+               "Login successful",
+               HttpContext.TraceIdentifier
+            ));
         }
     }
 }
