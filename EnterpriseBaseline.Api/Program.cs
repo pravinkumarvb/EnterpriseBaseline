@@ -1,3 +1,4 @@
+using EnterpriseBaseline.Api.Authorization;
 using EnterpriseBaseline.Application.Interfaces.Repositories;
 using EnterpriseBaseline.Application.Interfaces.Services;
 using EnterpriseBaseline.Application.Services;
@@ -6,6 +7,7 @@ using EnterpriseBaseline.Infrastructure.Identity;
 using EnterpriseBaseline.Infrastructure.Persistence;
 using EnterpriseBaseline.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -50,6 +52,21 @@ builder.Services
         };
     });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Users.View", policy =>
+        policy.Requirements.Add(new PermissionRequirement("Users.View")));
+
+    options.AddPolicy("Users.Create", policy =>
+        policy.Requirements.Add(new PermissionRequirement("Users.Create")));
+
+    options.AddPolicy("Users.Update", policy =>
+        policy.Requirements.Add(new PermissionRequirement("Users.Update")));
+
+    options.AddPolicy("Users.Delete", policy =>
+        policy.Requirements.Add(new PermissionRequirement("Users.Delete")));
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -90,6 +107,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 // Identity / Security
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+
 
 var app = builder.Build();
 
