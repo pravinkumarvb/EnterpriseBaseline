@@ -107,7 +107,7 @@ This baseline intentionally avoids ASP.NET Identity because:
 ---
 
 ## 🗂 Project Structure
-
+```
 EnterpriseBaseline
 │
 ├── Api
@@ -131,7 +131,7 @@ EnterpriseBaseline
 │ ├── Repositories
 │ └── Identity
 
-
+```
 ---
 
 ## 📦 Included Features (v1)
