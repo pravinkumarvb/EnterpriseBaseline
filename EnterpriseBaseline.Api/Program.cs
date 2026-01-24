@@ -125,6 +125,21 @@ builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
+var corsOrigins = builder.Configuration
+    .GetSection("Cors:AllowedOrigins")
+    .Get<string[]>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendCorsPolicy", policy =>
+    {
+        policy
+            .WithOrigins(corsOrigins ?? Array.Empty<string>())
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
 
 var app = builder.Build();
 
@@ -195,6 +210,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("FrontendCorsPolicy");
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
