@@ -23,5 +23,16 @@ namespace EnterpriseBaseline.Application.Common
                 TraceId = traceId ?? string.Empty
             };
         }
+
+        public static ApiResponse<T> Fail(string message, string? traceId = null)
+        {
+            return new ApiResponse<T>
+            {
+                Success = false,
+                Data = default,
+                Message = message,
+                TraceId = traceId
+            };
+        }
     }
 }

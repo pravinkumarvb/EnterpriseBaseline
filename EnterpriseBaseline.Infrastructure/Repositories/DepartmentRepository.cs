@@ -1,4 +1,5 @@
-﻿using EnterpriseBaseline.Application.Interfaces.Repositories;
+﻿using EnterpriseBaseline.Application.DTOs.Departments;
+using EnterpriseBaseline.Application.Interfaces.Repositories;
 using EnterpriseBaseline.Domain.Entities;
 using EnterpriseBaseline.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,7 @@ namespace EnterpriseBaseline.Infrastructure.Repositories
             return await _dbContext.Departments.ToListAsync();
         }
 
+        
         public async Task<Department?> GetByIdAsync(int id)
         {
             return await _dbContext.Departments.FindAsync(id);

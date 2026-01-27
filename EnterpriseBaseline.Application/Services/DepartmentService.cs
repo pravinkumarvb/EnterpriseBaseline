@@ -27,6 +27,21 @@ namespace EnterpriseBaseline.Application.Services
             }).ToList();
         }
 
+        public async Task<DepartmentDto?> GetByIdAsync(int id)
+        {
+           var department= await _repository.GetByIdAsync(id);
+            if(department==null)
+            {
+                return null;
+            }
+            return new DepartmentDto
+            {
+                Id = department.Id,
+                Name = department.Name,
+                Description = department.Description
+            };
+        }
+
         public async Task<int> CreateAsync(CreateDepartmentDto dto)
         {
             if (await _repository.ExistsByNameAsync(dto.Name))
