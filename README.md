@@ -1,110 +1,44 @@
-﻿# Enterprise Baseline – ASP.NET Core Backend
+﻿# EnterpriseBaseline
 
-> **An enterprise-ready backend foundation focused on correctness, security, and long-term maintainability.**  
-> This repository is not a demo and not a tutorial — it is a **baseline** designed to be extended safely by teams, enterprises, and AI-assisted development.
+> A production-ready **Angular + ASP.NET Core enterprise starter kit** with authentication, authorization, clean architecture, and a real reference CRUD feature.
+> This project removes repetitive setup work and provides a solid, extensible foundation for building internal tools, admin panels, and line-of-business applications.
 
 ---
 
-## 📌 What This Project Is
+## 🎯 Who This Is For
 
-This project provides a **clean, opinionated, enterprise-grade backend baseline** built with:
+- Enterprise developers
+- Freelancers building admin dashboards
+- Teams starting greenfield Angular + .NET projects
+- Developers who value clean architecture and long-term maintainability
 
-- ASP.NET Core
-- Entity Framework Core
-- SQL Server
+---
+
+## 🚀 What This Project Provides
+
+### Backend (ASP.NET Core)
+- Clean Architecture (Domain, Application, Infrastructure, API)
 - JWT Authentication
-- Permission-based Authorization
-- Clean Architecture
+- Permission-based Authorization (policy-based)
+- Global exception handling
+- Soft delete support
+- SQL Server with Entity Framework Core
+- Reference CRUD feature (Department)
 
-It intentionally focuses on **architecture, security, and patterns**, not feature bloat.
-
----
-
-## ❌ What This Project Is NOT
-
-- ❌ Not a SaaS product
-- ❌ Not a UI-heavy demo
-- ❌ Not ASP.NET Identity–based
-- ❌ Not opinionated about email, OTP, or UX flows
-- ❌ Not a complete user lifecycle system
-
-This is a **foundation**, not a finished product.
+### Frontend (Angular)
+- Angular 17 standalone architecture
+- JWT authentication flow
+- AuthGuard and PermissionGuard
+- Global HTTP interceptor
+- Feature-based folder structure
+- Layout shell with navbar and logout
+- Reference CRUD UI (Department)
 
 ---
 
-## 🧠 Core Design Principles
+## 🧱 Backend Architecture (ASP.NET Core)
 
-### 1. Clean Architecture
-
-Dependencies flow **inward only**:
-
-API → Application → Domain → Infrastructure
-
-
-- Domain has no dependencies
-- Application depends only on abstractions
-- Infrastructure implements interfaces
-- API wires everything together
-
----
-
-### 2. Explicit Over Magic
-
-- No framework-driven identity tables
-- No hidden behaviors
-- No scaffolding-generated logic
-
-Every important decision is:
-- Explicit
-- Reviewable
-- Replaceable
-
----
-
-### 3. API-First Security
-
-- JWT-based authentication
-- Permission-based authorization
-- Stateless design
-- Ready for enterprise SSO / external IdPs
-
----
-
-### 4. Enterprise-Safe Soft Delete
-
-- All entities inherit `BaseEntity`
-- Soft delete enforced via **global query filters**
-- No scattered `IsDeleted` checks
-- Deleted data remains auditable
-
----
-
-## 🔐 Authentication & Authorization
-
-### Authentication
-
-- Username or Email + Password
-- Secure password hashing
-- JWT access tokens
-- Stateless API authentication
-
-### Authorization
-
-- Permission-based (not role-only)
-- Policies enforced via `[Authorize(Policy = "...")]`
-- Permissions embedded in JWT claims
-- Authorization occurs **before controller execution**
-
-### Why NOT ASP.NET Identity?
-
-This baseline intentionally avoids ASP.NET Identity because:
-
-- Identity is cookie-first, not API-first
-- Heavy schema and framework lock-in
-- Enterprises often use external identity systems
-- Explicit security is easier to audit and customize
-
----
+The backend follows **Clean Architecture** principles.
 
 ## 🗂 Project Structure
 ```
@@ -134,134 +68,105 @@ EnterpriseBaseline
 ```
 ---
 
-## 📦 Included Features (v1)
+### Layer Responsibilities
 
-### Backend Infrastructure
-
-- Clean Architecture
-- EF Core + SQL Server
-- Database migrations
-- Global exception handling
-- Standard API response structure
-
-### Security
-
-- JWT authentication
-- Permission-based authorization
-- Policy-based access control
-- Secure password hashing
-
-### Reference Module
-
-**Department Master**
-- CRUD operations
-- Permission-protected endpoints
-- Soft delete
-- Validation and uniqueness enforcement
-
-This module serves as the **reference blueprint** for building additional features.
+- **Api**: HTTP endpoints, authentication, authorization, middleware
+- **Application**: Business logic, DTOs, interfaces, use cases
+- **Domain**: Core business entities and rules
+- **Infrastructure**: Database access, repositories, security implementations
 
 ---
 
-## 🚫 Intentionally Excluded (v1)
+## 🧩 Frontend Architecture (Angular)
 
-The following features are **intentionally not included**:
-
-- User self-registration
-- Change password
-- Reset password / email flows
-- OTP or email infrastructure
-- OAuth / social login
-- Frontend UI
-
-These are **product-specific concerns**, not baseline responsibilities.
-
----
-
-## 🧭 Roadmap
-
-Planned future extensions:
-
-- Admin-driven user management
-- Change password & reset password APIs
-- External IdP integration (Azure AD / Okta)
-- Multi-tenancy support
-- Angular frontend starter
-
----
-
-## ▶️ Running the Project Locally
-
-### Prerequisites
-
-- .NET SDK
-- SQL Server
-- Visual Studio 2022 Community
-
-### Steps
-
-1. Update the connection string in `appsettings.json`
-2. Run EF Core migrations
-3. Start the API
-4. Login using the seeded admin user
-
-```json
-{
-  "userNameOrEmail": "admin",
-  "password": "Admin@123"
-}
+The frontend uses a **feature-based structure** with standalone components.
+```
+src/app
+├── core
+│ ├── guards
+│ ├── interceptors
+│ ├── layouts
+│ └── services
+│
+├── features
+│ ├── auth
+│ └── departments
+│
+├── shared
+│ └── components
+│
+└── app.routes.ts
 ```
 
-5. Use the JWT token in Swagger Authorization
+### Key Principles
+
+- Feature-based organization
+- Core for cross-cutting concerns
+- Shared for reusable UI
+- Standalone components (no NgModules)
 
 ---
 
-## 🧪 Authorization Behavior
-- Missing JWT → 401 Unauthorized
-- Valid JWT, missing permission → 403 Forbidden
-- Valid permission → 200 OK<br/>
-This behavior is intentional and enterprise-correct.
+## 🔐 Authentication & Authorization Flow
+
+- Users authenticate using JWT
+- Token stored securely in local storage
+- HTTP interceptor attaches JWT to API requests
+- AuthGuard protects authenticated routes
+- PermissionGuard enforces fine-grained permissions
+- Backend remains the final authority
 
 ---
 
-## 🤖 AI Usage Guidance
-When using AI tools (e.g., ChatGPT):
-- Follow existing patterns
-- Do not access DbContext from Application layer
-- Always add permissions and policies for new endpoints
-- Keep controllers thin
-- Preserve clean architecture boundaries<br/>
-This structure is designed to remain safe even with AI-assisted development.
+## ▶️ Running the Project
+
+### Backend
+1. Open solution in Visual Studio 2022
+2. Update `appsettings.json` connection string
+3. Run database migrations
+4. Start the API project
+
+### Frontend
+```bash
+npm install
+ng serve
+
+Frontend runs at: http://localhost:4200
+Backend runs at: https://localhost:7172
+```
+___
+
+## 🧪 Reference Feature: Department
+The Department feature demonstrates:
+- End-to-end CRUD
+- DTO-based API contracts
+- Validation and error handling
+- Permission-based access control
+- Reusable frontend patterns
+
+Use this feature as a template to build additional modules.
+
+___
+
+## 🧠 Design Philosophy
+This project prioritizes:
+- Clarity over cleverness
+- Explicitness over magic
+- Long-term maintainability over shortcuts
+
+___
+
+## 📌 License
+MIT
+
+___
+
+## 📬 Feedback & Contributions
+This is a living baseline.<br/>
+Feedback, improvements, and discussions are welcome.
 
 ---
 
-## 🧩 Adding a New Module
-1. Create Domain entity
-2. Add repository interface (Application)
-3. Implement repository (Infrastructure)
-4. Create service (Application)
-5. Add controller (API)
-6. Define permissions
-7. Register authorization policies
-8. Secure endpoints<br/>
-Use the Department module as a reference.
-
----
-
-## 🎯 Target Audience
-- Enterprise developers
-- Backend architects
-- Internal enterprise systems
-- Scalable SaaS foundations
-- Long-term maintainable projects
-
----
-
-## 🧠 Final Note
-> This repository prioritizes clarity, control, and correctness over convenience.
 
 
-### If you are looking for:
-- A quick demo → this is not it
-- A scalable, enterprise-safe backend foundation → this is exactly it
 
