@@ -171,6 +171,48 @@ https://github.com/pravinkumarvb/EnterpriseBaselineFrontend
 
 ___
 
+## 💼 EnterpriseBaseline Pro
+
+**EnterpriseBaseline Pro** is a paid extension of this project for developers and teams who want to move faster with less risk.
+
+It builds on the same architecture and patterns shown in this repository.
+
+### What Pro Adds
+- User management (create users, assign roles)
+- Role & permission management UI
+- Advanced documentation:
+  - How to add new modules
+  - How to extend authorization safely
+  - Common architectural pitfalls to avoid
+- Database seeding scripts
+- Deployment guides:
+  - IIS
+  - VPS
+  - Docker (cloud-agnostic)
+ 
+### Why Pro Exists
+This repository is intentionally focused on **core patterns and clarity**.
+
+## Pro is for developers who:
+- Don’t want to reinvent the same modules repeatedly
+- Want guidance, not just code
+- Prefer a proven baseline for real projects
+
+### Availability
+> 🚧 **Early Access / Founder Edition**
+
+EnterpriseBaseline Pro is currently available as **early access**.
+
+## 👉 Get access here:  
+**[Gumroad link coming soon]**
+
+## Early access users receive:
+- Discounted pricing
+- Early updates
+- Influence on the roadmap
+
+---
+
 ## 📌 License
 MIT
 
