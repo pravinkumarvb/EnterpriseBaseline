@@ -156,6 +156,21 @@ This project prioritizes:
 
 ___
 
+## Frontend (Angular)
+This project includes a fully functional **Angular 17 frontend** built specifically for this backend.
+
+## 👉 **Angular Frontend Repository:**
+https://github.com/pravinkumarvb/EnterpriseBaselineFrontend
+
+## The frontend demonstrates:
+- JWT-based authentication
+- Permission-based route protection
+- Feature-based architecture
+- Reference CRUD UI (Department)
+- Layout shell with navbar and logout
+
+___
+
 ## 📌 License
 MIT
 
