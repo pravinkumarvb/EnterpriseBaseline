@@ -204,7 +204,7 @@ This repository is intentionally focused on **core patterns and clarity**.
 EnterpriseBaseline Pro is currently available as **early access**.
 
 ## 👉 Get access here:  
-**[Gumroad link coming soon]**
+https://pravinkumar17.gumroad.com/l/asnbkx
 
 ## Early access users receive:
 - Discounted pricing
