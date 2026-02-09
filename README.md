@@ -156,6 +156,18 @@ This project prioritizes:
 
 ___
 
+## Design Decisions / FAQ
+
+### Why is MediatR not used in this project?
+This project intentionally does not include MediatR in v1.0.
+
+Clean Architecture does not require MediatR, and for many CRUD-heavy enterprise applications it adds additional indirection without clear benefits.  
+The focus of EnterpriseBaseline is clarity, maintainability, and a production-ready foundation with minimal friction.
+
+The architecture is MediatR-ready, and teams can easily introduce it later if their use case justifies it.
+
+___
+
 ## Frontend (Angular)
 This project includes a fully functional **Angular 17 frontend** built specifically for this backend.
 
